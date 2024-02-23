@@ -1043,7 +1043,7 @@ pub(crate) fn raw_os_error_to_exc_type(
     }
 }
 
-#[cfg(all(target_arch = "wasm32", not(target_os = "wasi")))]
+#[cfg(all(any(target_arch = "wasm32", feature = "wasm-like"), not(target_os = "wasi")))]
 pub(crate) fn raw_os_error_to_exc_type(
     _errno: i32,
     _vm: &VirtualMachine,
@@ -1053,7 +1053,7 @@ pub(crate) fn raw_os_error_to_exc_type(
 
 pub(super) mod types {
     use crate::common::lock::PyRwLock;
-    #[cfg_attr(target_arch = "wasm32", allow(unused_imports))]
+    #[cfg_attr(any(target_arch = "wasm32", feature = "wasm-like"), allow(unused_imports))]
     use crate::{
         builtins::{
             traceback::PyTracebackRef, tuple::IntoPyTuple, PyInt, PyStrRef, PyTupleRef, PyTypeRef,
@@ -1249,7 +1249,7 @@ pub(super) mod types {
     // OS Errors:
     #[pyexception]
     impl PyOSError {
-        #[cfg(not(target_arch = "wasm32"))]
+        #[cfg(not(any(target_arch = "wasm32", feature = "wasm-like")))]
         fn optional_new(args: Vec<PyObjectRef>, vm: &VirtualMachine) -> Option<PyBaseExceptionRef> {
             let len = args.len();
             if (2..=5).contains(&len) {
@@ -1263,7 +1263,7 @@ pub(super) mod types {
                 None
             }
         }
-        #[cfg(not(target_arch = "wasm32"))]
+        #[cfg(not(any(target_arch = "wasm32", feature = "wasm-like")))]
         #[pyslot]
         fn slot_new(cls: PyTypeRef, args: FuncArgs, vm: &VirtualMachine) -> PyResult {
             // We need this method, because of how `CPython` copies `init`
@@ -1278,7 +1278,7 @@ pub(super) mod types {
                 PyBaseException::slot_new(cls, args, vm)
             }
         }
-        #[cfg(target_arch = "wasm32")]
+        #[cfg(any(target_arch = "wasm32", feature = "wasm-like"))]
         #[pyslot]
         fn slot_new(cls: PyTypeRef, args: FuncArgs, vm: &VirtualMachine) -> PyResult {
             PyBaseException::slot_new(cls, args, vm)

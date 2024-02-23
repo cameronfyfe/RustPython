@@ -9,6 +9,7 @@ license = "MIT"
 
 [features]
 threading = ["parking_lot"]
+wasm-like = []
 
 [dependencies]
 rustpython-format = { workspace = true }

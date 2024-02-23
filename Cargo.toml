@@ -42,7 +42,7 @@ rustpython-format = { git = "https://github.com/RustPython/Parser.git", rev = "2
 
 ahash = "0.8.3"
 ascii = "1.0"
-atty = "0.2.14"
+atty = { git = "https://github.com/cameronfyfe/atty.git", branch = "hack-for-risc0" }
 bitflags = "2.4.0"
 bstr = "0.2.17"
 cfg-if = "1.0"

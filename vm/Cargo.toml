@@ -22,6 +22,7 @@ ast = ["rustpython-ast"]
 codegen = ["rustpython-codegen", "ast"]
 parser = ["rustpython-parser", "ast"]
 serde = ["dep:serde"]
+wasm-like = ["rustpython-common/wasm-like"]
 
 [dependencies]
 rustpython-compiler = { workspace = true, optional = true }
@@ -100,9 +101,9 @@ uname = "0.1.1"
 strum = "0.24.0"
 strum_macros = "0.24.0"
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-rustyline = { workspace = true }
-which = "4.2.5"
+# [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+# rustyline = { workspace = true }
+# which = "4.2.5"
 
 [target.'cfg(any(not(target_arch = "wasm32"), target_os = "wasi"))'.dependencies]
 num_cpus = "1.13.1"

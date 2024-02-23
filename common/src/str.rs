@@ -6,10 +6,10 @@ use ascii::AsciiString;
 use rustpython_format::CharLen;
 use std::ops::{Bound, RangeBounds};
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(not(target_arch = "wasm32"), not(feature = "wasm-like")))]
 #[allow(non_camel_case_types)]
 pub type wchar_t = libc::wchar_t;
-#[cfg(target_arch = "wasm32")]
+#[cfg(any(target_arch = "wasm32", feature = "wasm-like"))]
 #[allow(non_camel_case_types)]
 pub type wchar_t = u32;
 
