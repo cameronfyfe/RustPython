@@ -67,7 +67,7 @@ pub fn assert_in_range(signum: i32, vm: &VirtualMachine) -> PyResult<()> {
 ///
 /// Missing signal handler for the given signal number is silently ignored.
 #[allow(dead_code)]
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(not(any(target_arch = "wasm32", feature = "no-os")))]
 pub fn set_interrupt_ex(signum: i32, vm: &VirtualMachine) -> PyResult<()> {
     use crate::stdlib::signal::_signal::{run_signal, SIG_DFL, SIG_IGN};
     assert_in_range(signum, vm)?;

@@ -22,6 +22,7 @@ ast = ["rustpython-ast"]
 codegen = ["rustpython-codegen", "ast"]
 parser = ["rustpython-parser", "ast"]
 serde = ["dep:serde"]
+no-os = ["rustpython-common/no-os"]
 
 [dependencies]
 rustpython-compiler = { workspace = true, optional = true }
@@ -100,7 +101,7 @@ uname = "0.1.1"
 strum = "0.24.0"
 strum_macros = "0.24.0"
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+[target.'cfg(any(not(target_arch = "wasm32"), not(feature = "no-os")))'.dependencies]
 rustyline = { workspace = true }
 which = "4.2.5"
 

@@ -24,14 +24,14 @@ pub mod time;
 pub mod warnings;
 mod weakref;
 
-#[cfg(any(not(target_arch = "wasm32"), target_os = "wasi"))]
+#[cfg(any(not(any(target_arch = "wasm32", feature = "no-os")), target_os = "wasi"))]
 #[macro_use]
 pub mod os;
 #[cfg(windows)]
 pub mod nt;
 #[cfg(unix)]
 pub mod posix;
-#[cfg(any(not(target_arch = "wasm32"), target_os = "wasi"))]
+#[cfg(any(not(any(target_arch = "wasm32", feature = "no-os")), target_os = "wasi"))]
 #[cfg(not(any(unix, windows)))]
 #[path = "posix_compat.rs"]
 pub mod posix;
@@ -40,7 +40,7 @@ pub mod posix;
 pub(crate) mod msvcrt;
 #[cfg(all(unix, not(any(target_os = "android", target_os = "redox"))))]
 mod pwd;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(not(any(target_arch = "wasm32", feature = "no-os")))]
 pub(crate) mod signal;
 pub mod sys;
 #[cfg(windows)]
@@ -106,7 +106,7 @@ pub fn get_module_inits() -> StdlibMap {
             // "fcntl" => fcntl::make_module,
         }
         // disable some modules on WASM
-        #[cfg(not(target_arch = "wasm32"))]
+        #[cfg(not(any(target_arch = "wasm32", feature = "no-os")))]
         {
             "_signal" => signal::make_module,
         }
