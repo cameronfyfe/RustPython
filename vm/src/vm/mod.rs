@@ -283,7 +283,7 @@ impl VirtualMachine {
         stdlib::sys::init_module(self, &self.sys_module, &self.builtins);
 
         let mut essential_init = || -> PyResult {
-            #[cfg(not(target_arch = "wasm32"))]
+            #[cfg(not(any(target_arch = "wasm32", feature = "no-os")))]
             import::import_builtin(self, "_signal")?;
             #[cfg(any(feature = "parser", feature = "compiler"))]
             import::import_builtin(self, "_ast")?;
@@ -292,7 +292,10 @@ impl VirtualMachine {
             let importlib = import::init_importlib_base(self)?;
             self.import_utf8_encodings()?;
 
-            #[cfg(any(not(target_arch = "wasm32"), target_os = "wasi"))]
+            #[cfg(any(
+                not(any(target_arch = "wasm32", feature = "no-os")),
+                target_os = "wasi"
+            ))]
             {
                 // this isn't fully compatible with CPython; it imports "io" and sets
                 // builtins.open to io.OpenWrapper, but this is easier, since it doesn't
