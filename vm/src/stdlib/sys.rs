@@ -168,7 +168,7 @@ mod sys {
     #[pyattr]
     fn executable(vm: &VirtualMachine) -> PyObjectRef {
         let ctx = &vm.ctx;
-        #[cfg(not(target_arch = "wasm32"))]
+        #[cfg(not(any(target_arch = "wasm32", feature = "no-os")))]
         {
             if let Some(exec_path) = env::args_os().next() {
                 if let Ok(path) = which::which(exec_path) {
